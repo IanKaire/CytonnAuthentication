@@ -16,6 +16,10 @@ const SignInScreen = () => {
         console.warn(password);
     };
 
+    const onForgotPasswordPressed = () => {
+        console.warn('Forgot Password Pressed');
+    };
+
     return (
         <View style={styles.root}>
              <Image
@@ -26,6 +30,7 @@ const SignInScreen = () => {
         <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
         <CustomButton text="Sign In" onPress={onSignInPressed}/>
+        <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
         </View>
     );
 };
