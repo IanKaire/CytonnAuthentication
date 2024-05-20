@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, useWindowDimensions, ScrollView} from 'react-native';
-import Logo from '../../../assets/images/Logo_2.png';
+import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
+import SocialSignInButtons from '../../components/SocialSignInButtons';
 
 const SignUpScreen = () => {
     const [username, setUserName] = useState('');
@@ -18,20 +19,8 @@ const SignUpScreen = () => {
         console.warn(password);
     };
 
-    const onSignInFacebook = () => {
-        console.warn('Sign In with Facebook');
-    };
-    
-    const onSignInGoogle= () => {
-        console.warn('Sign In with Google');
-    };
-
-    const onSignInApple = () => {
-        console.warn('Sign In with Apple');
-    };
-
-    const onSignUpPressed = () => {
-        console.warn('Redirect to Sign Up Screen');
+    const onSignInPressed = () => {
+        console.warn('Redirect to Sign In Screen');
     };
 
     const onTermsOfUsePressed = () => {
@@ -50,7 +39,7 @@ const SignUpScreen = () => {
                 style={[styles.logo, {height: height * 0.3}]}
                 resizeMode="contain"
         />
-        <Text style={styles.title}>Create an acoount</Text>
+        <Text style={styles.title}>Create an account</Text>
         <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
         <CustomInput placeholder="Email" value={email} setValue={setEmail} secureTextEntry={true}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
@@ -69,11 +58,9 @@ const SignUpScreen = () => {
           </Text>
         </Text>
 
-        <CustomButton text="Sign In with Facebook" onPress={onSignInFacebook} bgColor="#E7EAF4" fgColor="#4765A9"/>
-        <CustomButton text="Sign In with Google" onPress={onSignInGoogle} bgColor="#FAE9EA" fgColor="#DD4D44"/>
-        <CustomButton text="Sign In with Apple" onPress={onSignInApple} bgColor="#e3e3e3" fgColor="#363636"/>
+        <SocialSignInButtons/>
 
-        <CustomButton text="Don't have an account? Create one" onPress={onSignUpPressed} type="TERTIARY"/>
+        <CustomButton text="Have an account? Sign in" onPress={onSignInPressed} type="TERTIARY"/>
         </View>
         </ScrollView>
     );
