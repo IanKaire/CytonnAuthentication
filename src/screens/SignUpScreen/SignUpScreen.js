@@ -1,23 +1,21 @@
 
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, useWindowDimensions, ScrollView} from 'react-native';
-import Logo from '../../../assets/images/Logo_1.png';
+import { View, Text, StyleSheet, Image, useWindowDimensions, ScrollView} from 'react-native';
+import Logo from '../../../assets/images/Logo_2.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 
-const SignInScreen = () => {
+const SignUpScreen = () => {
     const [username, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordRepeat, setPasswordRepeat] = useState('');
 
     const {height} = useWindowDimensions();
     
-    const onSignInPressed = () => {
+    const onRegisterPressed = () => {
         console.warn(username);
         console.warn(password);
-    };
-
-    const onForgotPasswordPressed = () => {
-        console.warn('Forgot Password Pressed');
     };
 
     const onSignInFacebook = () => {
@@ -36,6 +34,14 @@ const SignInScreen = () => {
         console.warn('Redirect to Sign Up Screen');
     };
 
+    const onTermsOfUsePressed = () => {
+        console.warn('Terms Of Use');
+    };
+    
+    const onPrivacyPressed = () => {
+        console.warn('Privacy Policy');
+    };
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -44,12 +50,24 @@ const SignInScreen = () => {
                 style={[styles.logo, {height: height * 0.3}]}
                 resizeMode="contain"
         />
+        <Text style={styles.title}>Create an acoount</Text>
         <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
+        <CustomInput placeholder="Email" value={email} setValue={setEmail} secureTextEntry={true}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
+        <CustomInput placeholder="Repeat Password" value={passwordRepeat} setValue={setPasswordRepeat} secureTextEntry={true}/>
 
-        <CustomButton text="Sign In" onPress={onSignInPressed}/>
+        <CustomButton text="Register" onPress={onRegisterPressed}/>
 
-        <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
+        <Text style={styles.text}>
+          By registering, you confirm that you accept our{' '}
+          <Text style={styles.link} onPress={onTermsOfUsePressed}>
+            Terms of Use
+          </Text>{' '}
+          and{' '}
+          <Text style={styles.link} onPress={onPrivacyPressed}>
+            Privacy Policy
+          </Text>
+        </Text>
 
         <CustomButton text="Sign In with Facebook" onPress={onSignInFacebook} bgColor="#E7EAF4" fgColor="#4765A9"/>
         <CustomButton text="Sign In with Google" onPress={onSignInGoogle} bgColor="#FAE9EA" fgColor="#DD4D44"/>
@@ -68,10 +86,23 @@ const styles = StyleSheet.create({
       padding: 20,
     },
     logo: {
-      width: '70%',
-      maxWidth: 300,
-      maxHeight: 200,
-    },
+        width: '70%',
+        maxWidth: 100,
+        maxHeight: 50,
+      },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#006A5B',
+        margin: 10,
+      },
+      text: {
+        color: 'gray',
+        marginVertical: 10,
+      },
+      link: {
+        color: '#FDB075',
+      },
   });
 
-export default SignInScreen;
+export default SignUpScreen;
