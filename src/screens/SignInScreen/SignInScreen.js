@@ -6,7 +6,7 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 
 const SignInScreen = () => {
 
@@ -43,31 +43,17 @@ const SignInScreen = () => {
         {/* <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
         
-        <Controller
-         control={control}
-         name='username'
-         render={({field: {value, onChange, onBlur}}) => (
-        <TextInput
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            placeholder="Username"
-            secureTextEntry={false}
-         />
-        )}
+        <CustomInput
+          name="username"
+          placeholder="Username"
+          control={control}
         />
-         <Controller
-         control={control}
-         name='password'
-         render={({field: {value, onChange, onBlur}}) => (
-        <TextInput
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            placeholder="Password"
-            secureTextEntry={true}
-         />
-        )}
+
+        <CustomInput
+          name="password"
+          placeholder="Password"
+          secureTextEntry={true}
+          control={control}
         />
 
         <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)}/>
