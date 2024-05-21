@@ -27,7 +27,7 @@ const Navigation = () => {
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}/>
-            <Stack.Screen name="NewPassword" component={ResetPasswordScreen} />
+            <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
     </NavigationContainer>

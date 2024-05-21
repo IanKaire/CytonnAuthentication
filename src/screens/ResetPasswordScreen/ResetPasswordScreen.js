@@ -4,22 +4,22 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
 import {useNavigation} from '@react-navigation/native';
+import {useForm} from 'react-hook-form';
 
 const ResetPasswordScreen = () => {
-  const [code, setCode] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-
+  
+  const { control, handleSubmit } = useForm();
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
-  
+
   const onSignInPress = () => {
     navigation.navigate('SignIn');
     // console.warn('onSignInPress');
   };
 
-  const onSubmitPressed = async () => {
+  const onSubmitPressed = data => {
     navigation.navigate('Home');
-    // console.warn('Submitting');
+    console.warn(data);
   };
 
   return (
@@ -33,18 +33,27 @@ const ResetPasswordScreen = () => {
         <Text style={styles.title}>Reset your password?</Text>
 
         <CustomInput
-          placeholder="Code"
-          value={code}
-          setValue={setCode}
+          control={control}
+          name="code"
+          placeholder="Enter your reset password code"
+          rules={{required: 'Reset password code is required'}}
         />
 
         <CustomInput
-          placeholder="Enter your password"
-          value={newPassword}
-          setValue={setNewPassword}
+          control={control}
+          name="password"
+          placeholder="Enter your new password"
+          secureTextEntry={true}
+          rules={{
+            required: 'Password is required',
+            minLength: {
+              value: 8,
+              message: 'Password should be at least 8 characters long',
+            },
+          }}
         />
         
-        <CustomButton text="Submit" onPress={onSubmitPressed}/>
+        <CustomButton text="Submit" onPress={handleSubmit(onSubmitPressed)}/>
 
         <CustomButton
           text="Back to Sign in"

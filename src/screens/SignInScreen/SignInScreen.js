@@ -13,7 +13,9 @@ const SignInScreen = () => {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
     
-    const { control, handleSubmit } = useForm();
+    const { control, handleSubmit, formState: {errors} } = useForm();
+
+    console.log(errors);
 
     const onSignInPressed = data => {
         console.warn(data);
@@ -47,6 +49,7 @@ const SignInScreen = () => {
           name="username"
           placeholder="Username"
           control={control}
+          rules={{required: 'Username is required'}}
         />
 
         <CustomInput
@@ -54,7 +57,14 @@ const SignInScreen = () => {
           placeholder="Password"
           secureTextEntry={true}
           control={control}
-        />
+          rules={{
+            required: 'Password is required',
+            minLength: {
+              value: 8,
+              message: 'Password should be minimum 8 characters long',
+            },
+          }}
+         />
 
         <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)}/>
 

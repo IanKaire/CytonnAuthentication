@@ -4,16 +4,16 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
 import {useNavigation} from '@react-navigation/native';
+import {useForm} from 'react-hook-form';
 
 const ConfirmEmailScreen = () => {
-  const [code, setCode] = useState('');
-
+  const { control, handleSubmit } = useForm();
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
 
-  const onConfirmPress = () => {
+  const onConfirmPress = data => {
     navigation.navigate('Home');
-    // console.warn('Go to Home Screen');
+    console.warn(data);
   };
   
   const onSignInPress = () => {
@@ -21,7 +21,7 @@ const ConfirmEmailScreen = () => {
     // console.warn('Sign In Screen');
   };
 
-  const onResendPress = async () => {
+  const onResendPress = () => {
     console.warn('onResendPress');
   };
 
@@ -38,16 +38,18 @@ const ConfirmEmailScreen = () => {
         <CustomInput
           name="username"
           placeholder="Username"
+          control={control}
+          rules={{required: 'Username is required'}}
         />
 
         <CustomInput
-          value={code}
-          setValue={setCode}
+          control={control}
           name="code"
           placeholder="Enter your confirmation code"
+          rules={{required: 'Confirmation code is required'}}
         />
 
-        <CustomButton text="Confirm" onPress={onConfirmPress}/>
+        <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPress)}/>
 
         <CustomButton
           text="Resend code"

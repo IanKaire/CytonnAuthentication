@@ -5,17 +5,18 @@ import {useForm, Controller} from 'react-hook-form';
 const CustomInput = ({
   control,
   name,
+  rules = {},
   placeholder,
   secureTextEntry = false,
 }) => {
-  return (
-          <View
-            style={
-              styles.container}>
+  return (        
                <Controller
                   control={control}
                   name={name}
-                  render={({field: {value, onChange, onBlur}}) => (
+                  rules={rules}
+                  render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+                    <>
+                    <View style={[styles.container, {borderColor: error ? 'red' : '#e8e8e8'}]}>
                       <TextInput
                           value={value}
                           onChangeText={onChange}
@@ -24,9 +25,13 @@ const CustomInput = ({
                           style={styles.input}
                           secureTextEntry={secureTextEntry}
                       />
+                     </View> 
+                     {error && (
+                      <Text style={{color: 'red', alignSelf: 'stretch'}}>{error.message || 'Error'}</Text>
+                      )}
+                      </>
                       )}
               />
-          </View>
       )}
 ;
 
