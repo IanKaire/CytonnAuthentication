@@ -1,21 +1,23 @@
 
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, useWindowDimensions, ScrollView} from 'react-native';
+import { View, StyleSheet, Image, useWindowDimensions, ScrollView, TextInput} from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
+import {useForm, Controller} from 'react-hook-form';
 
 const SignInScreen = () => {
-    const [username, setUserName] = useState('');
-    const [password, setPassword] = useState('');
 
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+    
+    const { control, handleSubmit } = useForm();
 
-    const onSignInPressed = () => {
-        navigation.navigate('Home');
+    const onSignInPressed = data => {
+        console.warn(data);
+        // navigation.navigate('Home');
         // console.warn(username);
         // console.warn(password);
     };
@@ -38,10 +40,37 @@ const SignInScreen = () => {
                 style={[styles.logo, {height: height * 0.3}]}
                 resizeMode="contain"
         />
-        <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
-        <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
+        {/* <CustomInput placeholder="Username" value={username} setValue={setUserName} secureTextEntry={false}/>
+        <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
+        
+        <Controller
+         control={control}
+         name='username'
+         render={({field: {value, onChange, onBlur}}) => (
+        <TextInput
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            placeholder="Username"
+            secureTextEntry={false}
+         />
+        )}
+        />
+         <Controller
+         control={control}
+         name='password'
+         render={({field: {value, onChange, onBlur}}) => (
+        <TextInput
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            placeholder="Password"
+            secureTextEntry={true}
+         />
+        )}
+        />
 
-        <CustomButton text="Sign In" onPress={onSignInPressed}/>
+        <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)}/>
 
         <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
 
