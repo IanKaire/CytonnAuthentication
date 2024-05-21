@@ -3,14 +3,22 @@ import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'r
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
+import {useNavigation} from '@react-navigation/native';
 
 const ConfirmEmailScreen = () => {
   const [code, setCode] = useState('');
 
   const {height} = useWindowDimensions();
+  const navigation = useNavigation();
 
+  const onConfirmPress = () => {
+    navigation.navigate('Home');
+    // console.warn('Go to Home Screen');
+  };
+  
   const onSignInPress = () => {
-    console.warn('onSignInPress');
+    navigation.navigate('SignIn');
+    // console.warn('Sign In Screen');
   };
 
   const onResendPress = async () => {
@@ -39,7 +47,7 @@ const ConfirmEmailScreen = () => {
           placeholder="Enter your confirmation code"
         />
 
-        <CustomButton text="Confirm" />
+        <CustomButton text="Confirm" onPress={onConfirmPress}/>
 
         <CustomButton
           text="Resend code"

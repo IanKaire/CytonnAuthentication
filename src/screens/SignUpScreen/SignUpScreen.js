@@ -5,6 +5,7 @@ import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
+import {useNavigation} from '@react-navigation/native';
 
 const SignUpScreen = () => {
     const [username, setUserName] = useState('');
@@ -13,14 +14,17 @@ const SignUpScreen = () => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
 
     const {height} = useWindowDimensions();
-    
+    const navigation = useNavigation();
+
     const onRegisterPressed = () => {
-        console.warn(username);
-        console.warn(password);
+        navigation.navigate('ConfirmEmail');
+        // console.warn(username);
+        // console.warn(password);
     };
 
     const onSignInPressed = () => {
-        console.warn('Redirect to Sign In Screen');
+        navigation.navigate('SignIn');
+        // console.warn('Redirect to Sign In Screen');
     };
 
     const onTermsOfUsePressed = () => {

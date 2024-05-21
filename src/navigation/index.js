@@ -7,6 +7,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const AppTheme = {
     ...DefaultTheme,
@@ -27,6 +28,7 @@ const Navigation = () => {
             <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}/>
             <Stack.Screen name="NewPassword" component={ResetPasswordScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
     </NavigationContainer>
   )

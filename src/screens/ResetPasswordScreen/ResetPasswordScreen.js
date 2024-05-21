@@ -3,19 +3,23 @@ import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'r
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
+import {useNavigation} from '@react-navigation/native';
 
 const ResetPasswordScreen = () => {
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
   const {height} = useWindowDimensions();
-
+  const navigation = useNavigation();
+  
   const onSignInPress = () => {
-    console.warn('onSignInPress');
+    navigation.navigate('SignIn');
+    // console.warn('onSignInPress');
   };
 
   const onSubmitPressed = async () => {
-    console.warn('Submitting');
+    navigation.navigate('Home');
+    // console.warn('Submitting');
   };
 
   return (
