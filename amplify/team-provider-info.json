@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cytonnauthentication-staging-9a58b-authRole",
+      "UnauthRoleArn": "arn:aws:iam::058264554989:role/amplify-cytonnauthentication-staging-9a58b-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::058264554989:role/amplify-cytonnauthentication-staging-9a58b-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-cytonnauthentication-staging-9a58b-deployment",
+      "UnauthRoleName": "amplify-cytonnauthentication-staging-9a58b-unauthRole",
+      "StackName": "amplify-cytonnauthentication-staging-9a58b",
+      "StackId": "arn:aws:cloudformation:eu-north-1:058264554989:stack/amplify-cytonnauthentication-staging-9a58b/5e0b58c0-1810-11ef-9d10-0e280951492a",
+      "AmplifyAppId": "d5o2nd5jtbziw"
+    },
+    "categories": {
+      "auth": {
+        "CytonnAuthentication": {}
+      }
+    }
+  }
+}
