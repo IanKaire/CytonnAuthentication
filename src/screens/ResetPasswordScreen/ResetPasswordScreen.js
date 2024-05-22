@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {Auth} from 'aws-amplify';
 
 const ResetPasswordScreen = () => {
   
@@ -17,9 +18,15 @@ const ResetPasswordScreen = () => {
     // console.warn('onSignInPress');
   };
 
-  const onSubmitPressed = data => {
-    navigation.navigate('Home');
-    console.warn(data);
+  const onSubmitPressed = async data => {
+    try {
+      await Auth.forgotPasswordSubmit(data.username, data.code, data.password);
+      navigation.navigate('SignIn');
+    } catch (e) {
+      Alert.alert('Oops', e.message);
+    }
+    // navigation.navigate('Home');
+    // console.warn(data);
   };
 
   return (
@@ -33,16 +40,23 @@ const ResetPasswordScreen = () => {
         <Text style={styles.title}>Reset your password?</Text>
 
         <CustomInput
+          placeholder="Username"
+          name="username"
           control={control}
-          name="code"
-          placeholder="Enter your reset password code"
-          rules={{required: 'Reset password code is required'}}
+          rules={{required: 'Username is required'}}
         />
 
         <CustomInput
+          placeholder="Code"
+          name="code"
           control={control}
-          name="password"
+          rules={{required: 'Code is required'}}
+        />
+
+        <CustomInput
           placeholder="Enter your new password"
+          name="password"
+          control={control}
           secureTextEntry={true}
           rules={{
             required: 'Password is required',

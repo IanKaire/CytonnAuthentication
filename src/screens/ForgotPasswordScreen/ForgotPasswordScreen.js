@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, Alert, useWindowDimensions } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {Auth} from 'aws-amplify';
 
 const ForgotPasswordScreen = () => {
   
@@ -17,9 +18,15 @@ const ForgotPasswordScreen = () => {
     // console.warn(data);
   };
 
-  const onSendPressed = data => {
-    navigation.navigate('ResetPassword');
-    console.warn(data);
+  const onSendPressed = async data => {
+    try {
+      await Auth.forgotPassword(data.username);
+      navigation.navigate('ResetPassword');
+    } catch (e) {
+      Alert.alert('Oops', e.message);
+    }
+    // navigation.navigate('ResetPassword');
+    // console.warn(data);
   };
 
   return (
