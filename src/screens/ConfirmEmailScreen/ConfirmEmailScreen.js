@@ -5,15 +5,28 @@ import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {useRoute} from '@react-navigation/native';
+import {Auth} from 'aws-amplify';
 
 const ConfirmEmailScreen = () => {
-  const { control, handleSubmit } = useForm();
+  const route = useRoute();
+  const {control, handleSubmit, watch} = useForm({
+    defaultValues: {username: route?.params?.username},
+  });
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
+  
+  const username = watch('username');
 
-  const onConfirmPress = data => {
+  const onConfirmPress = async data => {
+    try {
+      await Auth.confirmSignUp(data.username, data.code);
+      navigation.navigate('SignIn');
+    } catch (e) {
+      Alert.alert('Oops', e.message);
+    }
     navigation.navigate('Home');
-    console.warn(data);
+    // console.warn(data);
   };
   
   const onSignInPress = () => {
@@ -21,8 +34,14 @@ const ConfirmEmailScreen = () => {
     // console.warn('Sign In Screen');
   };
 
-  const onResendPress = () => {
-    console.warn('onResendPress');
+  const onResendPress = async () => {
+    try {
+      await Auth.resendSignUp(username);
+      Alert.alert('Success', 'Code was resent to your email');
+    } catch (e) {
+      Alert.alert('Oops', e.message);
+    }
+    // console.warn('onResendPress');
   };
 
   return (

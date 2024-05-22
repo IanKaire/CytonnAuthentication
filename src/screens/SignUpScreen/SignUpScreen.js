@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, useWindowDimensions, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, Image, useWindowDimensions, Alert, ScrollView} from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {Auth} from 'aws-amplify';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -17,8 +18,20 @@ const SignUpScreen = () => {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
-    const onRegisterPressed = () => {
-        navigation.navigate('ConfirmEmail');
+    const onRegisterPressed = async data => {
+      const {username, password, email, name} = data;
+      try {
+        await Auth.signUp({
+          username,
+          password,
+          attributes: {email, name, preferred_username: username},
+        });
+  
+        navigation.navigate('ConfirmEmail', {username});
+      } catch (e) {
+        Alert.alert('Oops', e.message);
+      }
+        // navigation.navigate('ConfirmEmail');
         // console.warn(username);
         // console.warn(password);
     };
@@ -92,7 +105,7 @@ const SignUpScreen = () => {
           name="password"
           control={control}
           placeholder="Password"
-          secureTextEntry={true}
+          secureTextEntry
           rules={{
             required: 'Password is required',
             minLength: {
@@ -107,7 +120,7 @@ const SignUpScreen = () => {
           placeholder="Repeat Password"
           secureTextEntry
           rules={{
-            validate: value => value === pwd || 'Passwords do not match',
+            validate: value => value === pwd || 'Password do not match',
           }}
         />
 
