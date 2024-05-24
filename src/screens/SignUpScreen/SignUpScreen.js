@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, useWindowDimensions, Alert, ScrollView} from 'react-native';
-import Logo from '../../../assets/images/Logo_1.png';
+import Logo from '../../../assets/images/Logo_2.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: '70%',
-        maxWidth: 100,
-        maxHeight: 50,
+        maxWidth: 50,
+        maxHeight: 25,
       },
     title: {
         fontSize: 24,
