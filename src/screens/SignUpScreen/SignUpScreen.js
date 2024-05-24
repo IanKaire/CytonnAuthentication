@@ -137,7 +137,7 @@ const SignUpScreen = () => {
           </Text>
         </Text>
 
-        <SocialSignInButtons/>
+        {/* <SocialSignInButtons/> */}
 
         <CustomButton text="Have an account? Sign in" onPress={onSignInPressed} type="TERTIARY"/>
         </View>
@@ -150,11 +150,12 @@ const styles = StyleSheet.create({
     root: {
       alignItems: 'center',
       padding: 20,
+      paddingTop: 40,
     },
     logo: {
         width: '70%',
-        maxWidth: 50,
-        maxHeight: 25,
+        maxWidth: 200,
+        maxHeight: 100,
       },
     title: {
         fontSize: 24,

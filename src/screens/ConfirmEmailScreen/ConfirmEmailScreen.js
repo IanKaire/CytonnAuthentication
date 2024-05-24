@@ -25,7 +25,6 @@ const ConfirmEmailScreen = () => {
     } catch (e) {
       Alert.alert('Oops', e.message);
     }
-    navigation.navigate('Home');
     // console.warn(data);
   };
   
@@ -90,11 +89,12 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     padding: 20,
+    paddingTop: 150,
   },
   logo: {
     width: '70%',
-    maxWidth: 100,
-    maxHeight: 50,
+    maxWidth: 200,
+    maxHeight: 100,
   },
   title: {
     fontSize: 24,

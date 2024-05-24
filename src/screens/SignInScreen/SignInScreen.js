@@ -83,7 +83,7 @@ const SignInScreen = () => {
 
         <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
 
-        <SocialSignInButtons/>        
+        {/* <SocialSignInButtons/>         */}
 
         <CustomButton text="Don't have an account? Create one" onPress={onSignUpPressed} type="TERTIARY"/>
         </View>
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     root: {
       alignItems: 'center',
       padding: 20,
+      paddingTop: 100,
     },
     logo: {
       width: '70%',
