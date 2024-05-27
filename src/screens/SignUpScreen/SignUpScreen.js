@@ -17,10 +17,18 @@ const SignUpScreen = () => {
     const pwd = watch('password');
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
 
     const onRegisterPressed = async data => {
-      const {username, password, email, name} = data;
+      if (loading) {
+        return;
+      }
+  
+      setLoading(true);
+
+     
       try {
+        const {username, password, email, name} = data;
         await Auth.signUp({
           username,
           password,
@@ -124,7 +132,7 @@ const SignUpScreen = () => {
           }}
         />
 
-        <CustomButton text="Register"onPress={handleSubmit(onRegisterPressed)}/>
+        <CustomButton text={loading ? 'Loading...' : 'Register'} onPress={handleSubmit(onRegisterPressed)}/>
 
         <Text style={styles.text}>
           By registering, you confirm that you accept our{' '}
