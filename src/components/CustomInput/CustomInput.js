@@ -24,6 +24,8 @@ const CustomInput = ({
                           placeholder={placeholder}
                           style={styles.input}
                           secureTextEntry={secureTextEntry}
+                          placeholderTextColor='gray' 
+                          cursorColor='black'
                       />
                      </View> 
                      {error && (
@@ -47,7 +49,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 5,
   },
-  input: {},
+  input: {
+    color:"#000000",
+  },
 });
 
 export default CustomInput;
