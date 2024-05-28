@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, useWindowDimensions, ScrollView, TextInput, Alert} from 'react-native';
+import { View, StyleSheet, Image, useWindowDimensions, ScrollView, TextInput, Alert, BackHandler} from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -8,16 +8,88 @@ import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
+import TouchID from 'react-native-touch-id';
+import * as Keychain from 'react-native-keychain';
 
 const SignInScreen = () => {
     const [loading, setLoading] = useState(false);
+    const [loadingBiometrics, setLoadingBiometrics] = useState(false);
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
-    
+
     const { control, handleSubmit, formState: {errors} } = useForm();
 
     console.log(errors);
+   
+    const optionalConfigObject = {
+      title: 'Authentication Required', // Android
+      imageColor: '#006A5B', // Android
+      imageErrorColor: '#ff0000', // Android
+      sensorDescription: 'Touch sensor', // Android
+      sensorErrorDescription: 'Failed', // Android
+      cancelText: 'Cancel', // Android
+      fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
+      unifiedErrors: false, // use unified error messages (default false)
+      passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
+    };
 
+    const handleAuth = () => {
+      TouchID.isSupported().then(biometryType => {
+        if(biometryType === 'FaceID'){
+          // Alert.alert('FaceID is supported.')
+          TouchID.authenticate('', optionalConfigObject)
+          .then( async success => {
+            // Retrieve username and password
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                 const {username, password} = credentials;
+                 if (loadingBiometrics) {
+                  return;
+                }
+            
+                setLoadingBiometrics(true);
+            try {
+              // Sign in the user using AWS Amplify's Auth module
+              const user = await Auth.signIn(username, password);
+              console.log(user);
+              // navigation.navigate("Home");
+            } catch (e) {
+              Alert.alert('Oops', 'Invalid credentials');
+            }
+               setLoadingBiometrics(false);
+          }})
+          .catch(e => {
+              Alert.alert('Authentication Failed', 'Biometric authentication failed. Please try again.');
+          })
+        } else {
+          TouchID.authenticate('', optionalConfigObject)
+          .then( async success => {
+            // Retrieve username and password
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                 const {username, password} = credentials;
+
+                 if (loadingBiometrics) {
+                  return;
+                }
+            
+                setLoadingBiometrics(true);
+            try {
+              // Sign in the user using AWS Amplify's Auth module
+              const user = await Auth.signIn(username, password);
+              // navigation.navigate("Home");
+            } catch (e) {
+              Alert.alert('Oops', 'Invalid credentials');
+            }
+               setLoadingBiometrics(false);
+          }})
+          .catch(e => {
+              Alert.alert('Authentication Failed', 'Biometric authentication failed. Please try again.');
+          });
+        }
+      })
+    }
+  
     const onSignInPressed = async data => {
       if (loading) {
         return;
@@ -46,7 +118,12 @@ const SignInScreen = () => {
         navigation.navigate('SignUp');
         // console.warn('Redirect to Sign Up Screen');
     };
-
+    
+    const onBiometricsPressed = () => {
+        handleAuth();
+        // console.warn('Biometrics Pressed');
+    };
+    
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -80,6 +157,8 @@ const SignInScreen = () => {
          />
 
         <CustomButton  text={loading ? 'Loading...' : 'Sign In'} onPress={handleSubmit(onSignInPressed)}/>
+
+        <CustomButton text={loadingBiometrics ? 'Loading Biometrics Details...' : "Sign In with Biometrics"} onPress={onBiometricsPressed} type="SECONDARY"/>
 
         <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
 

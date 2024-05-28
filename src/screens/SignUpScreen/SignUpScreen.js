@@ -8,6 +8,7 @@ import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
+import * as Keychain from 'react-native-keychain';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -34,7 +35,10 @@ const SignUpScreen = () => {
           password,
           attributes: {email, name, preferred_username: username},
         });
-  
+
+         // Store username and password securely
+        await Keychain.setGenericPassword(username, password);
+        
         navigation.navigate('ConfirmEmail', {username});
       } catch (e) {
         Alert.alert('Oops', e.message);

@@ -25,7 +25,7 @@ const CustomInput = ({
                           style={styles.input}
                           secureTextEntry={secureTextEntry}
                           placeholderTextColor='gray' 
-                          cursorColor='black'
+                          cursorColor='#006A5B'
                       />
                      </View> 
                      {error && (
