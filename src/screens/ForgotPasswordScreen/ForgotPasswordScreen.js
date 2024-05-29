@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, Alert, useWindowDimensions } from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, Alert, useWindowDimensions, ActivityIndicator } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
 
 const ForgotPasswordScreen = () => {
-  
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm();
   const navigation = useNavigation();
   const {height} = useWindowDimensions();
@@ -19,12 +19,18 @@ const ForgotPasswordScreen = () => {
   };
 
   const onSendPressed = async data => {
+    if (loading) {
+      return;
+    }
+
+      setLoading(true); 
     try {
       await Auth.forgotPassword(data.username);
       navigation.navigate('ResetPassword');
     } catch (e) {
       Alert.alert('Oops', e.message);
     }
+    setLoading(false);
     // navigation.navigate('ResetPassword');
     // console.warn(data);
   };
@@ -46,7 +52,7 @@ const ForgotPasswordScreen = () => {
           rules={{required: 'Username is required'}}
         />
 
-        <CustomButton text="Send" onPress={handleSubmit(onSendPressed)}/>
+        <CustomButton text={loading ? <ActivityIndicator size="small" color="#ffffff"/> : 'Send'} onPress={handleSubmit(onSendPressed)}/>
 
         <CustomButton
           text="Back to Sign in"

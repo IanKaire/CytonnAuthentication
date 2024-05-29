@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions, ActivityIndicator } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
@@ -13,18 +13,25 @@ const ConfirmEmailScreen = () => {
   const {control, handleSubmit, watch} = useForm({
     defaultValues: {username: route?.params?.username},
   });
+  const [loading, setLoading] = useState(false);
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
   
   const username = watch('username');
 
   const onConfirmPress = async data => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true); 
     try {
       await Auth.confirmSignUp(data.username, data.code);
       navigation.navigate('SignIn');
     } catch (e) {
       Alert.alert('Oops', e.message);
     }
+    setLoading(false);
     // console.warn(data);
   };
   
@@ -67,7 +74,7 @@ const ConfirmEmailScreen = () => {
           rules={{required: 'Confirmation code is required'}}
         />
 
-        <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPress)}/>
+        <CustomButton text={loading ? <ActivityIndicator size="small" color="#ffffff"/> : 'Confirm'}onPress={handleSubmit(onConfirmPress)}/>
 
         <CustomButton
           text="Resend code"

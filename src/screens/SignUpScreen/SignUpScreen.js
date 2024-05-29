@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, useWindowDimensions, Alert, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, Image, useWindowDimensions, Alert, ScrollView, ActivityIndicator} from 'react-native';
 import Logo from '../../../assets/images/Logo_2.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -136,7 +136,7 @@ const SignUpScreen = () => {
           }}
         />
 
-        <CustomButton text={loading ? 'Loading...' : 'Register'} onPress={handleSubmit(onRegisterPressed)}/>
+        <CustomButton text={loading ? <ActivityIndicator size="small" color="#ffffff"/> : 'Register'} onPress={handleSubmit(onRegisterPressed)}/>
 
         <Text style={styles.text}>
           By registering, you confirm that you accept our{' '}

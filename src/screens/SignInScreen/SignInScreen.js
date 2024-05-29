@@ -1,13 +1,13 @@
 
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, useWindowDimensions, ScrollView, TextInput, Alert, BackHandler} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Image, useWindowDimensions, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
-import {Auth} from 'aws-amplify';
+import {Auth, loadingOverlay} from 'aws-amplify';
 import TouchID from 'react-native-touch-id';
 import * as Keychain from 'react-native-keychain';
 
@@ -16,10 +16,18 @@ const SignInScreen = () => {
     const [loadingBiometrics, setLoadingBiometrics] = useState(false);
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+    // const isFocused = useIsFocused();
 
     const { control, handleSubmit, formState: {errors} } = useForm();
 
     console.log(errors);
+
+    // useEffect(() => {
+    //   if (!isFocused) {
+    //     setLoading(false);
+    //     setLoadingBiometrics(false);
+    //   }
+    // }, [isFocused]);
    
     const optionalConfigObject = {
       title: 'Authentication Required', // Android
@@ -95,7 +103,8 @@ const SignInScreen = () => {
         return;
       }
   
-      setLoading(true);
+      setLoading(true); 
+     
       try {
         const response = await Auth.signIn(data.username, data.password);
         console.log(response);
@@ -124,6 +133,13 @@ const SignInScreen = () => {
         // console.warn('Biometrics Pressed');
     };
     
+    if(loadingBiometrics) {
+      return (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large"/>
+        </View>
+      );
+    }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -156,9 +172,9 @@ const SignInScreen = () => {
           }}
          />
 
-        <CustomButton  text={loading ? 'Loading...' : 'Sign In'} onPress={handleSubmit(onSignInPressed)}/>
+        <CustomButton  text={loading ? <ActivityIndicator size="small" color="#ffffff"/> : 'Sign In'} onPress={handleSubmit(onSignInPressed)}/>
 
-        <CustomButton text={loadingBiometrics ? 'Loading Biometrics Details...' : "Sign In with Biometrics"} onPress={onBiometricsPressed} type="SECONDARY"/>
+        <CustomButton text={loadingBiometrics ? <ActivityIndicator size="small" color="'#006A5B'"/>  : "Sign In with Biometrics"} onPress={onBiometricsPressed} type="SECONDARY"/>
 
         <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
 
@@ -182,6 +198,11 @@ const styles = StyleSheet.create({
       maxWidth: 300,
       maxHeight: 200,
     },
+    loadingOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
   });
 
 export default SignInScreen;

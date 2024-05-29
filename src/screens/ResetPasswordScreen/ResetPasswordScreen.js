@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, useWindowDimensions, ActivityIndicator } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/Logo_2.png';
@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
 
 const ResetPasswordScreen = () => {
-  
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm();
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
@@ -19,12 +19,18 @@ const ResetPasswordScreen = () => {
   };
 
   const onSubmitPressed = async data => {
+    if (loading) {
+        return;
+    }
+
+      setLoading(true); 
     try {
       await Auth.forgotPasswordSubmit(data.username, data.code, data.password);
       navigation.navigate('SignIn');
     } catch (e) {
       Alert.alert('Oops', e.message);
     }
+      setLoading(false);
     // console.warn(data);
   };
 
@@ -66,7 +72,7 @@ const ResetPasswordScreen = () => {
           }}
         />
         
-        <CustomButton text="Submit" onPress={handleSubmit(onSubmitPressed)}/>
+        <CustomButton text={loading ? <ActivityIndicator size="small" color="#ffffff"/> : 'Submit'} onPress={handleSubmit(onSubmitPressed)}/>
 
         <CustomButton
           text="Back to Sign in"
