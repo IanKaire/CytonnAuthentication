@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, useWindowDimensions, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
+import AuthAnimation from '../../../assets/animation/biometrics.json';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
@@ -10,6 +11,7 @@ import {useForm} from 'react-hook-form';
 import {Auth, loadingOverlay} from 'aws-amplify';
 import TouchID from 'react-native-touch-id';
 import * as Keychain from 'react-native-keychain';
+import LottieView from 'lottie-react-native';
 
 const SignInScreen = () => {
     const [loading, setLoading] = useState(false);
@@ -136,7 +138,7 @@ const SignInScreen = () => {
     if(loadingBiometrics) {
       return (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large"/>
+           <LottieView source={AuthAnimation} autoPlay loop />
         </View>
       );
     }

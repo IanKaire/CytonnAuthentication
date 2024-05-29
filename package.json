@@ -19,6 +19,7 @@
     "amazon-cognito-identity-js": "^5.2.4",
     "aws-amplify": "^4.3.12",
     "aws-amplify-react-native": "^6.0.2",
+    "lottie-react-native": "^5.1.6",
     "react": "18.1.0",
     "react-hook-form": "^7.51.4",
     "react-native": "0.70.15",
