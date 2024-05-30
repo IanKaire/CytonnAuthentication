@@ -8,6 +8,7 @@ import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
 import {Auth, Hub} from 'aws-amplify';
 
 const AppTheme = {
@@ -62,6 +63,7 @@ const Navigation = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
         ) : (
           <>
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
