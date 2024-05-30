@@ -1,29 +1,38 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, StyleSheet,Text} from 'react-native';
 import {Auth} from 'aws-amplify';
 
-const index = () => {
+const HomeScreen = () => {
   const signOut = () => {
     Auth.signOut();
   };
 
   return (
-    <View style={{flex: 1}}>
-      <Text style={{fontSize: 24, alignSelf: 'center'}}>Home, sweet home</Text>
+    <View style={styles.root}>
+      <Text style={styles.homeTxt}>Home, sweet home</Text>
       <Text
         onPress={signOut}
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          color: 'red',
-          marginTop: 'auto',
-          marginVertical: 20,
-          fontSize: 20,
-        }}>
+        style={styles.signOutTxt}>
         Sign out
       </Text>
     </View>
   );
 };
 
-export default index;
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homeTxt: {
+    fontSize: 24,
+  },
+  signOutTxt: {
+    marginVertical: 20,
+    color: 'red',
+    fontSize: 20,
+  },
+});
+
+export default HomeScreen;
