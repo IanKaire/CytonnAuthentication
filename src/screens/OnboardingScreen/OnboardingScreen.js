@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, SafeAreaView, StatusBar, Pressable} from 'react
 import React, { useState }from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 
 const onboardingSteps = [
     {
@@ -49,7 +50,8 @@ const OnboardingScreen = () => {
         navigation.navigate('SignIn');
         setScreenIndex(0);
     };
-
+    
+    const fling = Gesture.Fling();
   return (
     <SafeAreaView style={styles.page}>
     {/* <Stack.Screen options={{ headerShown: false }} /> */}
@@ -67,7 +69,7 @@ const OnboardingScreen = () => {
       ))}
     </View>
 
-   
+     <GestureDetector gesture={fling}>
       <View style={styles.pageContent} key={screenIndex}>
           <MaterialIcons
             style={styles.image}
@@ -90,6 +92,7 @@ const OnboardingScreen = () => {
           </View>
         </View>
       </View>
+      </GestureDetector>
   </SafeAreaView>
   )
 }
