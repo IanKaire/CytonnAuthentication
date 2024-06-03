@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, SafeAreaView, StatusBar, Pressable} from 'react
 import React, { useState }from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { GestureDetector, Gesture, Directions } from 'react-native-gesture-handler';
 
 const onboardingSteps = [
     {
@@ -28,6 +28,7 @@ const OnboardingScreen = () => {
 
     const data = onboardingSteps[screenIndex];
     const navigation = useNavigation();
+
     const onContinue = () => {
       const isLastScreen = screenIndex === onboardingSteps.length - 1;
       if (isLastScreen) {
@@ -37,21 +38,24 @@ const OnboardingScreen = () => {
       }
     };
   
-    // const onBack = () => {
-    //   const isFirstScreen = screenIndex === 0;
-    //   if (isFirstScreen) {
-    //     endOnboarding();
-    //   } else {
-    //     setScreenIndex(screenIndex - 1);
-    //   }
-    // };
+    const onBack = () => {
+      const isFirstScreen = screenIndex === 0;
+      if (isFirstScreen) {
+        return;
+      } else {
+        setScreenIndex(screenIndex - 1);
+      }
+    };
   
     const endOnboarding = () => {
         navigation.navigate('SignIn');
         setScreenIndex(0);
     };
     
-    const fling = Gesture.Fling();
+    const swipes = Gesture.Simultaneous(
+      Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
+      Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
+    );
   return (
     <SafeAreaView style={styles.page}>
     {/* <Stack.Screen options={{ headerShown: false }} /> */}
@@ -69,7 +73,7 @@ const OnboardingScreen = () => {
       ))}
     </View>
 
-     <GestureDetector gesture={fling}>
+     <GestureDetector gesture={swipes}>
       <View style={styles.pageContent} key={screenIndex}>
           <MaterialIcons
             style={styles.image}
