@@ -3,6 +3,7 @@ import React, { useState }from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import { GestureDetector, Gesture, Directions } from 'react-native-gesture-handler';
+import Animated, { FadeIn, FadeOut, BounceInRight, SlideOutLeft, BounceOutLeft, SlideInRight, } from 'react-native-reanimated';
 
 const onboardingSteps = [
     {
@@ -75,16 +76,22 @@ const OnboardingScreen = () => {
 
      <GestureDetector gesture={swipes}>
       <View style={styles.pageContent} key={screenIndex}>
+        <Animated.View entering={FadeIn} exiting={FadeOut}>
           <MaterialIcons
             style={styles.image}
             name={data.icon}
             size={150}
             color="#CEF202"
           />
+         </Animated.View>
 
         <View style={styles.footer}>
-            <Text style={styles.title}>{data.title}</Text>
-            <Text style={styles.description}>{data.description}</Text>
+            <Animated.Text entering={BounceInRight} exiting={BounceOutLeft} style={styles.title}>
+                    {data.title}
+            </Animated.Text>
+            <Animated.Text entering={SlideInRight.delay(50)} exiting={SlideOutLeft} style={styles.description}>
+                     {data.description}
+            </Animated.Text>
           <View style={styles.buttonsRow}>
             <Text onPress={endOnboarding} style={styles.buttonText}>
               Skip
