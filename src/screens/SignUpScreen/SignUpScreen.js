@@ -24,10 +24,9 @@ const SignUpScreen = () => {
       if (loading) {
         return;
       }
-  
+    
       setLoading(true);
-
-     
+    
       try {
         const {username, password, email, name} = data;
         await Auth.signUp({
@@ -35,18 +34,36 @@ const SignUpScreen = () => {
           password,
           attributes: {email, name, preferred_username: username},
         });
-
-         // Store username and password securely
-        await Keychain.setGenericPassword(username, password);
-        
+    
+        // Ask the user if they want to use biometrics for the next sign in
+        Alert.alert(
+          'Biometrics',
+          'Do you want to use biometrics to sign in next time?',
+          [
+            {
+              text: 'No',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Yes',
+              onPress: async () => {
+                // Store username and password securely
+                await Keychain.setGenericPassword(username, password, {
+                  accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY,
+                });
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+    
         navigation.navigate('ConfirmEmail', {username});
       } catch (e) {
         Alert.alert('Oops', e.message);
       }
-        // navigation.navigate('ConfirmEmail');
-        // console.warn(username);
-        // console.warn(password);
     };
+    
 
     const onSignInPressed = () => {
         navigation.navigate('SignIn');
